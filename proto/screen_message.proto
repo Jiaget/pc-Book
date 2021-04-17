@@ -1,6 +1,8 @@
 syntax = "proto3";
 package jiaget.pcbook;
 option go_package = "./;pb";
+option java_package = "com.github.jiaget.pcbook.pb";
+option java_multiple_files = true;
 
 message Screen {
   message Resolution {
