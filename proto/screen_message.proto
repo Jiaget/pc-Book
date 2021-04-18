@@ -14,7 +14,7 @@ message Screen {
     IPS = 1;
     OLED = 2;
   }
-  float size_centimeter = 1;
+  float size_inch = 1;
   Resolution resolution = 2;
   Panel panel = 3;
   bool multitouch = 4;

@@ -1,0 +1,62 @@
+{
+  "id": "dde1e0ba-5b9f-498c-9b94-f55ddda491dd",
+  "brand": "Dell",
+  "name": "Latitude",
+  "cpu": {
+    "brand": "Intel",
+    "name": "Intel corei7 4790K",
+    "number_cores": 8,
+    "number_threads": 9,
+    "min_ghz": 2.546528345095795,
+    "max_ghz": 3.516982569413398
+  },
+  "ram": {
+    "value": "14",
+    "unit": "GIGABYTE"
+  },
+  "gpus": [
+    {
+      "brand": "AMD",
+      "name": "RX 6900 XT",
+      "min_ghz": 1.0049032793700208,
+      "max_ghz": 1.9335315747469135,
+      "memory": {
+        "value": "3",
+        "unit": "GIGABYTE"
+      }
+    }
+  ],
+  "storage": [
+    {
+      "driver": "HDD",
+      "memory": {
+        "value": "3",
+        "unit": "TERABYTE"
+      }
+    },
+    {
+      "driver": "SSD",
+      "memory": {
+        "value": "779",
+        "unit": "GIGABYTE"
+      }
+    }
+  ],
+  "screen": {
+    "size_inch": 14.688496,
+    "resolution": {
+      "width": 4430,
+      "height": 2492
+    },
+    "panel": "UNKNOWN",
+    "multitouch": false
+  },
+  "keyboard": {
+    "layout": "QWERTY",
+    "backlit": false
+  },
+  "weight_kg": 2.2796310745900707,
+  "price_rmb": 11563.561368977038,
+  "release_year": 2012,
+  "updated_at": "2021-04-18T13:33:11.581919Z"
+}
