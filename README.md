@@ -70,3 +70,20 @@ option go_package ="./;pb";
 
 格式化问题：
   - 在proto文件按`shift +  alt + f` vscode 会进行格式化程序的初始化，选择一项格式化的程序，并在`settings`确定启动自动格式化，之后vscode会自动帮助格式化。
+
+# Go部分
+- 序列化protobuf message
+  - 1. 生成随机pc参数，相关函数单元测试。将生成的`proto message` 写入二进制文件与JSON文件。
+  - 2. 发现： JSON文件大小是二进制文件的五倍。
+- 实现unary gRPC
+  - 定义一个proto service (使用unary RPC) 来创建 laptop 实例
+  - 使用go来实现服务端代码
+    - 处理unary RPC 请求：将实例存入内存。
+  - 使用go 实现客户端代码
+    - 调用服务端的 unary RPC
+    - 写单元测试 测试客户端服务端之间的联系。
+  - 处理error 和 中止
+    - 超时中止
+    - 取消中止 （ctrl + C）
+    - 处理错误
+    - 返回状态码
