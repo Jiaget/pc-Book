@@ -16,6 +16,8 @@ var ErrAlreadyExists = errors.New("record already exists")
 type LaptopStore interface {
 	// Save saves the laptop to the store
 	Save(laptop *pb.Laptop) error
+	// Find finds the laptop by id
+	Find(id string) (*pb.Laptop, error)
 }
 
 // InMemoryLaptopStore stores laptop in memory
@@ -49,4 +51,22 @@ func (store *InMemoryLaptopStore) Save(laptop *pb.Laptop) error {
 
 	store.data[other.Id] = other
 	return nil
+}
+
+func (store *InMemoryLaptopStore) Find(id string) (*pb.Laptop, error) {
+	store.mutex.RLock()
+	defer store.mutex.RUnlock()
+
+	laptop := store.data[id]
+	if laptop == nil {
+		return nil, nil
+	}
+
+	// Because laptop is a point, we need copy it, in case being changed by outter code
+	copied := &pb.Laptop{}
+	err := copier.Copy(copied, laptop)
+	if err != nil {
+		return nil, fmt.Errorf("cannot copy laptop data: %w", err)
+	}
+	return copied, nil
 }
