@@ -1,0 +1,12 @@
+syntax = "proto3";
+package jiaget.pcbook;
+option go_package = "./;pb";
+option java_package = "com.github.jiaget.pcbook.pb";
+option java_multiple_files = true;
+
+message Filter {
+  double max_price_rmb = 1;
+  uint32 min_cpu_cores = 2;
+  double min_cpu_ghz = 3;
+  double min_ram = 4;
+}
