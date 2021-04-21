@@ -1,6 +1,6 @@
-# 生成的客户端代码在哪里？
+# 生成的客户端和服务端接口代码在哪里？
 
-使用protoc生成 xx.pb.go 后，想找到client的接口，然而没有找到。在 [gRPC官方文档](http://doc.oschina.net/grpc?t=60133) 中寻找问题。发现一个问题
+使用protoc生成 xx.pb.go 后，想找到server的接口以及用grpc声明的函数，然而没有找到。在 [gRPC官方文档](http://doc.oschina.net/grpc?t=60133) 中寻找问题。发现一个问题
 - 官方文档中生成`pb.go`的指令中的 `--go_out=plugins=grpc`，实际使用提示不支持。是官方文档没有更新吗?
 - 文档给了 一个[教程仓库](https://github.com/grpc/grpc-go/tree/master/examples/route_guide)。 在 `issue` 中果然有人提了一样的问题。答案是：
   ```
