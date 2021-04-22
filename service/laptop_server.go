@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"log"
-	"time"
 
 	"github.com/google/uuid"
 	"github.jiaget.com/pc-book/pb"
@@ -42,8 +41,9 @@ func (server *LaptopServer) CreateLaptop(ctx context.Context, req *pb.CreateLapt
 		laptop.Id = id.String()
 	}
 
+	// Simulate  a heavy network
+	// time.Sleep(6 * time.Second)
 	// fatal timeout and cancel requests
-	time.Sleep(6 * time.Second)
 	if ctx.Err() == context.Canceled {
 		log.Print("request is canceled")
 		return nil, status.Error(codes.Canceled, "request is canceled")
@@ -69,4 +69,32 @@ func (server *LaptopServer) CreateLaptop(ctx context.Context, req *pb.CreateLapt
 		Id: laptop.Id,
 	}
 	return res, nil
+}
+
+func (server *LaptopServer) SearchLaptop(
+	request *pb.SearchLaptopRequest,
+	stream pb.LaptopService_SearchLaptopServer,
+) error {
+	filter := request.GetFilter()
+	log.Printf("receive a search-laptop request with filter:%v", filter)
+
+	err := server.Store.Search(
+		stream.Context(),
+		filter,
+		func(laptop *pb.Laptop) error {
+			res := &pb.SearchLaptopResponse{Laptop: laptop}
+
+			err := stream.Send(res)
+			if err != nil {
+				return err
+			}
+
+			log.Printf("sent laptop with id: %s", laptop.GetId())
+			return nil
+		},
+	)
+	if err != nil {
+		return status.Errorf(codes.Internal, "unexpected error: %v", err)
+	}
+	return nil
 }
