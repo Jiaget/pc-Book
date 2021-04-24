@@ -91,4 +91,5 @@ option go_package ="./;pb";
 - server stream gRPC (SEARCH laptop)
   - 在 proto 文件中， server stream 是服务端返回多条 `response`，在 `response` 前加 `stream` 关键字 `rpc SearchLaptop(SearchLaptopRequest) returns (stream SearchLaptopResponse{};`
   - 在服务端和客户端通信过程中，注意传一个上下文 `context`， 当客户端发送一个 `request` 后由于某些特殊原因终端。服务端应该停止继续发送 `response`，否则在服务端处于高负载的情况下，浪费资源发送无效 `response` ( 这些 `response` 没有人会去接收)。
-  - 
+
+- client stream gRPC (UPLOAD image)

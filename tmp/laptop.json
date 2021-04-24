@@ -1,25 +1,25 @@
 {
-  "id": "dde1e0ba-5b9f-498c-9b94-f55ddda491dd",
-  "brand": "Dell",
-  "name": "Latitude",
+  "id": "fa201956-ec0d-4768-b749-febfa81a680e",
+  "brand": "Lenovo",
+  "name": "Thinkpad",
   "cpu": {
     "brand": "Intel",
-    "name": "Intel corei7 4790K",
-    "number_cores": 8,
-    "number_threads": 9,
-    "min_ghz": 2.546528345095795,
-    "max_ghz": 3.516982569413398
+    "name": "Intel corei5 4590",
+    "number_cores": 7,
+    "number_threads": 10,
+    "min_ghz": 2.0669742018987995,
+    "max_ghz": 2.985118665412688
   },
   "ram": {
-    "value": "14",
+    "value": "59",
     "unit": "GIGABYTE"
   },
   "gpus": [
     {
-      "brand": "AMD",
-      "name": "RX 6900 XT",
-      "min_ghz": 1.0049032793700208,
-      "max_ghz": 1.9335315747469135,
+      "brand": "NVIDIA",
+      "name": "Tesla K40",
+      "min_ghz": 1.0267021521934752,
+      "max_ghz": 1.7053074011733882,
       "memory": {
         "value": "3",
         "unit": "GIGABYTE"
@@ -30,33 +30,33 @@
     {
       "driver": "HDD",
       "memory": {
-        "value": "3",
+        "value": "2",
         "unit": "TERABYTE"
       }
     },
     {
       "driver": "SSD",
       "memory": {
-        "value": "779",
+        "value": "256",
         "unit": "GIGABYTE"
       }
     }
   ],
   "screen": {
-    "size_inch": 14.688496,
+    "size_inch": 14.203295,
     "resolution": {
-      "width": 4430,
-      "height": 2492
+      "width": 2215,
+      "height": 1246
     },
     "panel": "UNKNOWN",
     "multitouch": false
   },
   "keyboard": {
-    "layout": "QWERTY",
-    "backlit": false
+    "layout": "UNKNOWN",
+    "backlit": true
   },
-  "weight_kg": 2.2796310745900707,
-  "price_rmb": 11563.561368977038,
-  "release_year": 2012,
-  "updated_at": "2021-04-18T13:33:11.581919Z"
+  "weight_kg": 1.7827123207747992,
+  "price_rmb": 10683.603711920914,
+  "release_year": 2010,
+  "updated_at": "2021-04-23T15:11:26.563486900Z"
 }

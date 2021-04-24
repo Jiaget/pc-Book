@@ -15,9 +15,30 @@ message SearchLaptopRequest { Filter filter = 1; }
 
 message SearchLaptopResponse { Laptop laptop = 2; }
 
+message UploadImageRequest {
+  // interface
+  oneof data {
+    ImageInfo info = 1;
+    bytes chunk_data = 2;
+  };
+}
+
+message ImageInfo {
+  string laptop_id = 1;
+  // .jpg || .png ...
+  string image_type = 2;
+}
+
+message UploadImageResponse {
+  string id = 1;
+  uint32 size = 2;
+}
+
 service LaptopService {
-  // 这是简单rpc
+  // unary rpc
   rpc CreateLaptop(CreateLaptopRequest) returns (CreateLaptopResponse) {};
+  // server stream
   rpc SearchLaptop(SearchLaptopRequest) returns (stream SearchLaptopResponse) {
   };
+  rpc UploadImage(stream UploadImageRequest) returns (UploadImageResponse) {};
 }
