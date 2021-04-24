@@ -21,11 +21,12 @@ type LaptopServer struct {
 	pb.UnimplementedLaptopServiceServer
 	laptopStore LaptopStore
 	imageStore  ImageStore
+	rateStore   RateStore
 }
 
 // NewLaptopServer returns a new laptopserver
-func NewLaptopServer(laptopStore LaptopStore, imageStore ImageStore) *LaptopServer {
-	return &LaptopServer{laptopStore: laptopStore, imageStore: imageStore}
+func NewLaptopServer(laptopStore LaptopStore, imageStore ImageStore, rateStore RateStore) *LaptopServer {
+	return &LaptopServer{laptopStore: laptopStore, imageStore: imageStore, rateStore: rateStore}
 }
 
 // CreateLaptop is a unary RPC to create a new laptop
@@ -172,6 +173,55 @@ func (server *LaptopServer) UploadImage(stream pb.LaptopService_UploadImageServe
 		return logError(status.Errorf(codes.Unknown, "cannot send response:%v", err))
 	}
 	log.Printf("saved image with id: %s, size: %d", imageID, imageSize)
+	return nil
+}
+
+// RateLaptop is a bidrectional-stream RPC that allows client to rate
+// a stream of laptops with a score, return a stream of average score for each of them
+func (server *LaptopServer) RateLaptop(stream pb.LaptopService_RateLaptopServer) error {
+	for {
+		err := contextError(stream.Context())
+		if err != nil {
+			return err
+		}
+
+		req, err := stream.Recv()
+		if err == io.EOF {
+			log.Print("no more data")
+			break
+		}
+		if err != nil {
+			return logError(status.Errorf(codes.Unknown, "cannot receive stream request: %v", err))
+		}
+
+		laptopID := req.LaptopId
+		score := req.GetScore()
+
+		log.Printf("received a rate-laptop request: id = %s, score = %.2f", laptopID, score)
+
+		found, err := server.laptopStore.Find(laptopID)
+		if err != nil {
+			return logError(status.Errorf(codes.Internal, "cannot find laptop: %v", err))
+		}
+		if found == nil {
+			return logError(status.Errorf(codes.NotFound, "laptop %s is not exist", laptopID))
+		}
+
+		rate, err := server.rateStore.Add(laptopID, score)
+		if err != nil {
+			return logError(status.Errorf(codes.Internal, "cannot save the laptop score in to the store: %v", err))
+		}
+
+		res := &pb.RateLaptopResponse{
+			LaptopId:     laptopID,
+			RatedCount:   rate.Count,
+			AverageScore: rate.Sum / float64(rate.Count),
+		}
+		err = stream.Send(res)
+		if err != nil {
+			return logError(status.Errorf(codes.Unknown, "cannot send the response: %v", err))
+		}
+	}
 	return nil
 }
 
