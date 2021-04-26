@@ -24,6 +24,7 @@ type LaptopServiceClient interface {
 	SearchLaptop(ctx context.Context, in *SearchLaptopRequest, opts ...grpc.CallOption) (LaptopService_SearchLaptopClient, error)
 	// client stream
 	UploadImage(ctx context.Context, opts ...grpc.CallOption) (LaptopService_UploadImageClient, error)
+	// bidirectional-streaming
 	RateLaptop(ctx context.Context, opts ...grpc.CallOption) (LaptopService_RateLaptopClient, error)
 }
 
@@ -151,6 +152,7 @@ type LaptopServiceServer interface {
 	SearchLaptop(*SearchLaptopRequest, LaptopService_SearchLaptopServer) error
 	// client stream
 	UploadImage(LaptopService_UploadImageServer) error
+	// bidirectional-streaming
 	RateLaptop(LaptopService_RateLaptopServer) error
 	mustEmbedUnimplementedLaptopServiceServer()
 }

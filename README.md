@@ -101,6 +101,7 @@ option go_package ="./;pb";
 - [grpc reflection](https://github.com/grpc/grpc-go/blob/master/Documentation/server-reflection-tutorial.md)
 
 - [evans的Github](https://github.com/ktr0731/evans)
+  - `evans -r -p [port]
 
 # gRPC拦截器， JWT
 gRPC 拦截器是gRPC的中间件。
