@@ -39,12 +39,8 @@ func (manager *JWTManager) Generate(user *User) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	tokenString, err := token.SignedString([]byte(manager.secretKey))
-	if err != nil {
-		fmt.Println("here jiaget")
-		return "", err
-	}
-	return tokenString, nil
+
+	return token.SignedString([]byte(manager.secretKey))
 }
 
 // Verify verifies the access token string and return the user claim if the token is veliad
