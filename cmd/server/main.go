@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"log"
@@ -13,26 +12,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
-
-func unaryInterceptor(
-	ctx context.Context,
-	req interface{},
-	info *grpc.UnaryServerInfo,
-	handler grpc.UnaryHandler,
-) (interface{}, error) {
-	log.Println("--> unary interceptor: ", info.FullMethod)
-	return handler(ctx, req)
-}
-
-func streamInterceptor(
-	srv interface{},
-	stream grpc.ServerStream,
-	info *grpc.StreamServerInfo,
-	handler grpc.StreamHandler,
-) error {
-	log.Println("-->stream interceptor: ", info.FullMethod)
-	return handler(srv, stream)
-}
 
 const (
 	secretKey     = "secret"
@@ -55,6 +34,15 @@ func createUser(userStore service.UserStore, username, password, role string) er
 	return userStore.Save(user)
 }
 
+func accessibleRoles() map[string][]string {
+	const laptopServicePath = "/jiaget.pcbook.LaptopService/"
+	return map[string][]string{
+		laptopServicePath + "CreateLaptop": {"admin"},
+		laptopServicePath + "UploadImage":  {"admin"},
+		laptopServicePath + "RateLaptop":   {"admin", "user"},
+	}
+}
+
 func main() {
 	// get the port from command flag
 	port := flag.Int("port", 0, "server port")
@@ -74,9 +62,11 @@ func main() {
 	imageStore := service.NewDiskImageStore("img")
 	rateStore := service.NewInMemoryRateStore()
 	laptopServer := service.NewLaptopServer(laptopStore, imageStore, rateStore)
+
+	interceptor := service.NewAuthInterceptor(jwtManager, accessibleRoles())
 	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(unaryInterceptor),
-		grpc.StreamInterceptor(streamInterceptor),
+		grpc.UnaryInterceptor(interceptor.Unary()),
+		grpc.StreamInterceptor(interceptor.Stream()),
 	)
 	pb.RegisterLaptopServiceServer(grpcServer, laptopServer)
 	pb.RegisterAuthServiceServer(grpcServer, authServer)
