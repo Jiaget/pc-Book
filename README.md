@@ -118,3 +118,29 @@ gRPC 拦截器是gRPC的中间件。
 - 授权(authentication)
 - 认证(authorization)
 - 限速(rate-limit)
+
+# gRPC的三种连接类型
+- `INSECURE` 
+  - 纯文本
+  - 无加密
+  - 不要在生产时选择
+- 服务端（server-side） TLS
+  - 加密数据
+  - 只需要服务端需要提供证书给客户端
+  - 当允许任何客户端都可以调用服务API,可以选择
+- mutual(相互) TLS 
+  - 加密数据
+  - 服务端-客户端均需提供证书
+
+## gRPC服务端TLS的实现
+- 服务端 (加载证书，密钥)
+  - `tls` 包加载证书， 密钥文件
+  - `credentials` 包中的 `NewTLS` 函数创建 `credentials`
+  - 在`gRPC`创建server时，加入 `gRPC.Cred(credentials)`
+- 客户端 （加载CA 证书）
+  - `x509` 包创建一个`certPool`， 将CA证书添加进去
+  - 将`dial` 函数中原先设定的 `Insecure` 设置成 `WithTransportCredentials`
+  - 剩下的验证由`gRPC` 帮忙处理
+  
+## gRPC mutual TLS 的实现
+- `gen.bat`中增加生成客户端证书命令。
