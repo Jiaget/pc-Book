@@ -144,3 +144,10 @@ gRPC 拦截器是gRPC的中间件。
   
 ## gRPC mutual TLS 的实现
 - `gen.bat`中增加生成客户端证书命令。
+- 服务端
+  - `ClientAuth` 字段修改成 `tls.RequireAndVerifyClientCert`
+  - 仿照服务端TLS实现， 创建`ClientCAs` Client 证书池。
+- 客户端
+  - 仿照服务端TLS实现，加载客户端证书与密钥
+
+最后，以上证书均没有使用passphrase加密，passphrase的解决方法可以交给第三方平台委托。。
